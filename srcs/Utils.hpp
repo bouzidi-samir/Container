@@ -6,7 +6,7 @@
 /*   By: sbouzidi <sbouzidi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 11:29:15 by sbouzidi          #+#    #+#             */
-/*   Updated: 2022/07/07 15:55:30 by sbouzidi         ###   ########.fr       */
+/*   Updated: 2022/06/27 14:43:34 by sbouzidi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ namespace ft
             static const bool value = is_integral;
         };
     
+    //Je set cahque type avec ma structure:
+
     template <typename>
         struct is_integral_type : public is_integral_struct<false, bool> {};
 

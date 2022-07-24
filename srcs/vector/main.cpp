@@ -6,7 +6,7 @@
 /*   By: sbouzidi <sbouzidi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 14:48:11 by sbouzidi          #+#    #+#             */
-/*   Updated: 2022/07/07 15:55:35 by sbouzidi         ###   ########.fr       */
+/*   Updated: 2022/07/17 16:37:37 by sbouzidi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,7 @@ int main() {
     {
 
         ft::vector<int>  test1; 
-        test1.push_back(6);
-        test1.push_back(66);
-        test1.push_back(12);
-        test1.push_back(69);
+ 
         ft::vector<int>::iterator ite = &test1.back();
         ft::vector<int>::iterator it = &test1[2];
     
