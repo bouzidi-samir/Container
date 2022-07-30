@@ -11,12 +11,12 @@ namespace ft{
 
 			public :
 
-				first_type first;
-				second_type second;
 
 				typedef T1 first_type;
 				typedef T2 second_type;
 
+				first_type first;
+				second_type second;
 
 				pair(void){};
 				pair(const first_type &a, const second_type &b){
@@ -25,15 +25,14 @@ namespace ft{
 				}
 				
 				template <class U, class V>
-				pair (const pair<U,V>& pr){
-					*this = pr;
+				pair (const pair<U,V>& pr) : first(pr.first), second(pr.second) {
+					//*this = pr;
 				}
 				
-				pair& operator= (const pair& pr);
-				{
-					this->first = pr.first;
-					this->second = pr.second;
-					return *this;;
+				pair& operator=(pair const& p) {
+					this->first = p.first;
+					this->second = p.second;
+					return *this;
 				}
 
 			private:
@@ -69,5 +68,5 @@ template <class T1, class T2>
 template <class T1, class T2>
   	bool operator>= (const pair<T1,T2>& lhs, const pair<T1,T2>& rhs)
 		{ return !(lhs<rhs); }
-}
+};
 #endif 
