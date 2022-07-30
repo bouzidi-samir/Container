@@ -6,7 +6,7 @@
 /*   By: sbouzidi <sbouzidi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 15:04:27 by sbouzidi          #+#    #+#             */
-/*   Updated: 2022/07/30 23:47:27 by sbouzidi         ###   ########.fr       */
+/*   Updated: 2022/07/31 00:02:30 by sbouzidi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -355,7 +355,8 @@ namespace ft
 			}
 		}
 
-		void			clear() {
+		void	clear() 
+		{
 			for (size_type i = 0; i < this->_size; ++i) {
 				_alloc.destroy(_tab + i);
 			}
