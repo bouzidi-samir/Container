@@ -78,6 +78,7 @@ class binary_tree {
 			this->null_leaf->null_leaf = NULL;
 			Root = this->null_leaf;
 			Root->parent = this->null_leaf;
+			Root = null_leaf;
 
 		}
 		// binary_tree(key_compare const &compare, allocator_type const &allocator){
@@ -88,9 +89,9 @@ class binary_tree {
 
 		Node *initializeNode(value_type const& key) {
 			Node *ret = this->allocator.allocate(1);
-			ret->left = NULL;
-			ret->right = NULL;
-			ret->parent = NULL;
+			ret->left = null_leaf;
+			ret->right = null_leaf;
+			ret->parent = null_leaf;
 			ret->null_leaf = null_leaf;
 			ret->data = key;
 
@@ -108,9 +109,9 @@ class binary_tree {
 			{
 				while(1)
 				{
-					if(compare(add->data, current->data))
+					if(compare(add->data.first, current->data.first))
 					{
-						if(current->left)
+						if(current->left != null_leaf)
 							current = current->left;
 						else
 						{
@@ -121,7 +122,7 @@ class binary_tree {
 					}
 					else
 					{
-						if(current->right)
+						if(current->right != null_leaf)
 							current = current->right;
 						else
 						{
@@ -145,9 +146,8 @@ class binary_tree {
 				return search(node->right, key);
 		}
 
-
 		Node* deleteNode(Node *node, value_type const& key) {
-			if (node == NULL)
+			if (node == null_leaf)
 				return node;
 
 			if (compare(key, node->data))
@@ -165,17 +165,17 @@ class binary_tree {
 			}
 
 			else {
-				if (node->left == NULL && node->right == NULL)
-					return NULL;
+				if (node->left == null_leaf && node->right == null_leaf)
+					return null_leaf;
 				
-				else if (node->left == NULL)
+				else if (node->left == null_leaf)
 				{
 					Node *tmp = node->right;
 					this->allocator.deallocate(node, 1);
 					return tmp;
 				}
 
-				else if (node->right == NULL)
+				else if (node->right == null_leaf)
 				{
 					Node *tmp = node->left;
 					this->allocator.deallocate(node, 1);
@@ -191,10 +191,16 @@ class binary_tree {
 			return node;
 		}
 
+		Node *getFirstNode() {
+			if (this->Root == null_leaf)
+				return null_leaf;
+			return getFirstNode(this->Root);
+		}
+
 		Node *getFirstNode(Node *node) {
 			Node *current = node;
 
-			while (current && current->left)
+			while (current != null_leaf && current->left != null_leaf)
 			{
 				current = current->left;
 			}
@@ -202,10 +208,16 @@ class binary_tree {
 			return current;
 		}
 
+		Node *getLastNode() {
+			if (this->Root == null_leaf)
+				return null_leaf;
+			return getLastNode(this->Root);
+		}
+
 		Node *getLastNode(Node *node) {
 			Node *current = node;
 
-			while (current && current->right)
+			while (current != null_leaf && current->right != null_leaf)
 			{
 				current = current->right;
 			}
@@ -219,7 +231,7 @@ class binary_tree {
 	}
 
 	void printHelper(Node* root, std::string indent, bool last) {
-		if (root != NULL) {
+		if (root != null_leaf) {
 			std::cout << indent;
 			if (last) {
 				std::cout << "R---- ";
@@ -229,7 +241,7 @@ class binary_tree {
 				indent += "|  ";
 			}
 
-			std::cout << root->data << std::endl;
+			std::cout << root->data.first << std::endl;
 			printHelper(root->left, indent, false);
 			printHelper(root->right, indent, true);
 		}

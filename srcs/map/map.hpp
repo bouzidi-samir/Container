@@ -14,7 +14,7 @@ class map {
 	
 		typedef Key											key_type;
 		typedef T											mapped_type;
-		typedef ft::pair<const key_type, mapped_type>		value_type;
+		typedef ft::pair<key_type, mapped_type>		value_type;
 		typedef Compare										key_compare;
 		typedef Alloc										allocator_type;
 		typedef typename allocator_type::reference			reference;
@@ -26,10 +26,11 @@ class map {
 		typedef typename ft::iterator<value_type>			iterator;
 		typedef typename ft::iterator<const value_type>		const_iterator;
 
+
+
 		binary_tree<value_type, key_compare>	tree;
-
-
 	private:
+
 		key_compare								comp;
 		allocator_type							alloc;
 
@@ -56,9 +57,19 @@ class map {
 			return iterator(this->tree.getFirstNode(), this->tree.getLastNode());
 		}
 
+		const_iterator begin(void) const
+		{
+			return const_iterator(this->tree.getFirstNode(), this->tree.getLastNode());
+		}
+
 		iterator end(void)
 		{
 			return iterator(this->tree.null_leaf, this->tree.getLastNode());
+		}
+
+		const_iterator end(void) const
+		{
+			return const_iterator(this->tree.null_leaf, this->tree.getLastNode());
 		}
 
 		void insert(value_type const& val)

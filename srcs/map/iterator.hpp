@@ -34,7 +34,9 @@ template <class T>
 
 		template <class it>
 		iterator(iterator<it> const& i) {
-			*this = i;
+			//*this = i;
+			this->ptr = i.ptr;
+			this->last = i.last;
 		}
 
 		~iterator() {}
@@ -73,8 +75,9 @@ template <class T>
 			return tmp;
 		}
 
-		value_type*	operator->(void) const { return this->ptr; } 
-		value_type& operator*(void) const { return *this->ptr; }
+		iterator_value base(void) const { return this->ptr; }
+		pointer	operator->(void) const { return &this->ptr->data; } 
+		reference operator*(void) const { return this->ptr->data; }
 
 		private:
 
@@ -82,6 +85,36 @@ template <class T>
 		iterator_value	last;
 
 };
+
+template<class iterator, class iterator2>
+bool operator==(ft::iterator<iterator> const& it, ft::iterator<iterator2> const& ite) { return !(it != ite); }
+template<class iterator, class iterator2>
+bool operator!=(ft::iterator<iterator> const& it, ft::iterator<iterator2> const& ite) {
+	if (it.base()->null_leaf == NULL && it.base()->null_leaf == NULL)
+		return false;
+	if (it.base()->null_leaf == NULL && it.base()->null_leaf)
+		return true;
+	if (it.base()->null_leaf && ite.base()->null_leaf == NULL)
+		return true;
+	return it->first != ite->first || it->second != ite->second;
+}
+
+template <class T>
+class const_iterator {
+
+
+	public:
+
+	typedef std::bidirectional_iterator_tag	iterator_category;
+	typedef const T							value_type;
+	typedef typename std::ptrdiff_t			difference_type;
+	typedef const T*						pointer;
+	typedef const T&						reference;
+
+
+
+
+}
 
 };
 
