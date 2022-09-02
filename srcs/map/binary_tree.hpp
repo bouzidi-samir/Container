@@ -253,6 +253,3 @@ class binary_tree {
 };
 
 #endif
-
-//créer node
-//reprendre les fonctions et le code du site
