@@ -6,7 +6,7 @@
 /*   By: sbouzidi <sbouzidi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 15:04:27 by sbouzidi          #+#    #+#             */
-/*   Updated: 2022/07/24 15:47:43 by sbouzidi         ###   ########.fr       */
+/*   Updated: 2022/07/31 00:02:30 by sbouzidi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -355,6 +355,14 @@ namespace ft
 			}
 		}
 
+		void	clear() 
+		{
+			for (size_type i = 0; i < this->_size; ++i) {
+				_alloc.destroy(_tab + i);
+			}
+			this->_size = 0;
+		}
+
         iterator erase(iterator pos)
         {                
             difference_type d = pos - _tab;
@@ -389,8 +397,6 @@ namespace ft
 		   std::swap(this->_size_capacity,x._size_capacity);
 		}
 
-        //////////// OPERATOR = //////////
-
         vector& operator=(const vector &x) 
         {
 			if (this->_size > 0) 
@@ -406,9 +412,6 @@ namespace ft
 				_tab[i] = x._tab[i];
 			return *this;
 		}
-        
-
-
 
     private:
     
