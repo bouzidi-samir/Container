@@ -114,8 +114,8 @@ class const_iterator {
 
 
 
-}
-
 };
+
+}
 
 #endif

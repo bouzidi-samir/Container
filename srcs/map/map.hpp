@@ -4,6 +4,7 @@
 #include "iterator.hpp"
 #include "binary_tree.hpp"
 #include "pair.hpp"
+# include "../Utils.hpp"
 
 namespace ft {
 
@@ -33,11 +34,14 @@ class map {
 
 		key_compare								comp;
 		allocator_type							alloc;
-
+		binary_search<value_type, Compare>		binary;
 
 	public:
 
-		explicit map(key_compare const& comp = key_compare(), allocator_type const& alloc = allocator_type())
+		//Construit une map vide. 
+
+		explicit map(key_compare const& comp = key_compare(), 
+		allocator_type const& alloc = allocator_type())
 		{
 			this->comp = comp;
 			this->alloc = alloc;
@@ -45,12 +49,29 @@ class map {
 			this->tree.allocator = alloc;
 		}
 
+		//Contruit un map avec une liste de pair cles : valeur
+
+		template <class InputIterator>
+			map (InputIterator first, InputIterator last, const key_compare &comp = key_compare(),
+			const allocator_type &alloc = allocator_type(),
+			typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type *enable = nullptr)
+		{
+			this->comp = comp;
+			this->alloc = alloc;
+			this->insert(first, last);
+		}
+
+		//Copy contructor.
+
+		map(const map &ref)
+		{
+			this->alloc = ref.alloc;
+			this->comp = ref.comp;
+			this->insert(ref.begin(), ref.end());
+		}
+
+
 		~map(void) {}
-
-
-
-
-
 
 		iterator begin(void)
 		{
