@@ -36,11 +36,14 @@ class map {
 		value_type								value;
 		key_compare								comp;
 		allocator_type							alloc;
-
+		binary_search<value_type, Compare>		binary;
 
 	public:
 
-		explicit map(key_compare const& comp = key_compare(), allocator_type const& alloc = allocator_type())
+		//Construit une map vide. 
+
+		explicit map(key_compare const& comp = key_compare(), 
+		allocator_type const& alloc = allocator_type())
 		{
 			this->comp = comp;
 			this->alloc = alloc;
