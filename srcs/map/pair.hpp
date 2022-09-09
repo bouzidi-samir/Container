@@ -18,10 +18,9 @@ namespace ft{
 				first_type first;
 				second_type second;
 
-				pair(void){};
-				pair(const first_type &a, const second_type &b){
-					this->first = a;
-					this->second = b;
+				pair(void){};		
+
+				pair(const first_type &a, const second_type &b) : first(a), second(b) {
 				}
 				
 				template <class U, class V>

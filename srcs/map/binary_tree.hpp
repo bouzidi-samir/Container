@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <memory>
+#include "pair.hpp"
 
 template <class T>
 class Node {
@@ -17,10 +18,10 @@ class Node {
 
 	Node* next() {
 
-		if (this->right != null_leaf)
+		if (this != this->null_leaf && this->right != this->null_leaf)
 		{
 			Node *tmp = this->right;
-			while (tmp->left != null_leaf)
+			while (tmp->left != this->null_leaf && tmp->left != nullptr)
 				tmp = tmp->left;
 			return tmp;
 		}
@@ -76,11 +77,17 @@ class binary_tree {
 			this->null_leaf->right = NULL;
 			this->null_leaf->parent = NULL;
 			this->null_leaf->null_leaf = NULL;
-			Root = this->null_leaf;
-			Root->parent = this->null_leaf;
-			Root = null_leaf;
-
+			this->Root = this->null_leaf;
+			// this->Root->parent = this->null_leaf;
 		}
+
+		int size(Node *node) const
+		{
+			if (node == null_leaf)
+				return  0;
+			return 1 + size(node->left) + size(node->right);
+		}
+
 		// binary_tree(key_compare const &compare, allocator_type const &allocator){
 		// 	this->compare = compare;
 		// 	this->allocator = allocator;
@@ -100,34 +107,34 @@ class binary_tree {
 		
 		void insert(value_type const& key){
 			Node *add = this->initializeNode(key);
-			Node *current = this->Root;
+			Node *nodeent = this->Root;
 
-			if (current == null_leaf) {
-				this->Root= add;
+			if (nodeent == null_leaf) {
+				this->Root = add;
 			}
 			else
 			{
 				while(1)
 				{
-					if(compare(add->data.first, current->data.first))
+					if (compare(add->data.first, nodeent->data.first))
 					{
-						if(current->left != null_leaf)
-							current = current->left;
+						if(nodeent->left != null_leaf)
+							nodeent = nodeent->left;
 						else
 						{
-							current->left = add;
-							add->parent = current;
+							nodeent->left = add;
+							add->parent = nodeent;
 							return;
 						}
 					}
 					else
 					{
-						if(current->right != null_leaf)
-							current = current->right;
+						if(nodeent->right != null_leaf)
+							nodeent = nodeent->right;
 						else
 						{
-							current->right = add;
-							add->parent = current;
+							nodeent->right = add;
+							add->parent = nodeent;
 							return;
 						}
 					}
@@ -135,54 +142,72 @@ class binary_tree {
 			}
 		}
 
-		bool search(Node *node, value_type const& key){
+		Node *search(Node *node, value_type const& key){
 			if(node == null_leaf)
-				return false;
-			else if (node->data == key)
-				return true;
-			else if (compare(key, node->data))
+				return null_leaf;
+			else if (node->data.first == key.first)
+				return node;
+			else if (compare(key.first, node->data.first))
 				return search(node->left, key);
 			else
 				return search(node->right, key);
 		}
 
 		Node* deleteNode(Node *node, value_type const& key) {
+			Node *tmp = null_leaf;
+
 			if (node == null_leaf)
 				return node;
-
-			if (compare(key, node->data))
+			if (compare(key.first, node->data.first))
 			{
 				node->left = deleteNode(node->left, key);
 				if (node->left)
 					node->left->parent = node;
 			}
-
-			else if (compare(node->data, key))
+			else if (compare(node->data.first, key.first))
 			{
 				node->right = deleteNode(node->right, key);
 				if (node->right)
 					node->right->parent = node;
 			}
-
-			else {
+			else
+			{
 				if (node->left == null_leaf && node->right == null_leaf)
+				{
+					if (node == this->Root) {
+						// this->Root->parent = null_leaf;
+						this->Root = null_leaf;
+					}
+					this->allocator.destroy(node);
+					this->allocator.deallocate(node, 1);
 					return null_leaf;
+				}
 				
 				else if (node->left == null_leaf)
 				{
-					Node *tmp = node->right;
+					tmp = node->right;
+					if (node == this->Root) {
+						this->Root = tmp;
+						this->Root->parent = null_leaf;
+					}
+					this->allocator.destroy(node);
 					this->allocator.deallocate(node, 1);
 					return tmp;
 				}
 
 				else if (node->right == null_leaf)
 				{
-					Node *tmp = node->left;
+					tmp = node->left;
+					if (node == this->Root) {
+						this->Root = tmp;
+						this->Root->parent = null_leaf;
+					}
+					this->allocator.destroy(node);
 					this->allocator.deallocate(node, 1);
 					return tmp;
 				}
 
-				Node* tmp = getFirstNode(node->right);
+				tmp = getFirstNode(node->right);
 				node->data = tmp->data;
 				node->right = deleteNode(node->right, tmp->data);
 				if (node->right)
@@ -190,38 +215,44 @@ class binary_tree {
 			}
 			return node;
 		}
-
-		Node *getFirstNode() {
+		
+		Node *getFirstNode() const {
 			if (this->Root == null_leaf)
 				return null_leaf;
 			return getFirstNode(this->Root);
 		}
 
-		Node *getFirstNode(Node *node) {
-			Node *current = node;
+		Node *getFirstNode(Node *node) const {
+			Node *nodeent = node;
 
-			while (current != null_leaf && current->left != null_leaf)
+			while (nodeent->left != null_leaf)
 			{
-				current = current->left;
+				nodeent = nodeent->left;
 			}
 
-			return current;
+			return nodeent;
 		}
 
-		Node *getLastNode() {
-			if (this->Root == null_leaf)
-				return null_leaf;
-			return getLastNode(this->Root);
-		}
-
-		Node *getLastNode(Node *node) {
-			Node *current = node;
-
-			while (current != null_leaf && current->right != null_leaf)
-			{
-				current = current->right;
+		Node *getLastNode() const {
+			Node *	temp = Root;
+			if (temp != temp->null_leaf) {
+				while (temp->right != temp->null_leaf)
+					temp = temp->right;
 			}
-			return current;
+			return (temp);
+			// if (this->Root == null_leaf)
+			// 	return null_leaf;
+			// return getLastNode(this->Root);
+		}
+
+		Node *getLastNode(Node *node) const {
+			Node *nodeent = node;
+
+			while (nodeent != null_leaf && nodeent->right != null_leaf)
+			{
+				nodeent = nodeent->right;
+			}
+			return nodeent;
 		}
 
 
@@ -247,9 +278,23 @@ class binary_tree {
 		}
 	}
 
+	void	btree_display(Node *root, int space)
+	{
+		int	i = 5;
 
-	private:
-
+		if (root == null_leaf)
+			return ;
+		space += 5;
+		btree_display(root->right, space);
+		while (i++ < space)
+			printf(" ");
+		if (root->parent == root->null_leaf)
+			std::cout << root->data.first << " - null_leaf" << std::endl;
+		else
+			std::cout << root->data.first << " - " <<  root->parent->data.first << std::endl;
+		
+		btree_display(root->left, space);
+	}
 };
 
 #endif
