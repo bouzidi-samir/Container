@@ -36,7 +36,6 @@ class map {
 		value_type								value;
 		key_compare								comp;
 		allocator_type							alloc;
-		binary_search<value_type, Compare>		binary;
 
 	public:
 
@@ -104,6 +103,28 @@ class map {
 		const_iterator end(void) const
 		{
 			return const_iterator(this->tree.null_leaf, this->tree.getLastNode());
+		}
+
+					// reverse begin  &&  end
+
+		reverse_iterator rend(void)
+		{
+			return reverse_iterator(this->begin());
+		}
+
+		const_reverse_iterator rend(void) const
+		{
+			return const_reverse_iterator(this->begin());
+		}
+
+		reverse_iterator rbegin(void)
+		{
+			return reverse_iterator(this->end());
+		}
+
+		const_reverse_iterator rbegin(void) const
+		{
+			return const_reverse_iterator(this->end());
 		}
 
 	    //   iterator find (const key_type& k)

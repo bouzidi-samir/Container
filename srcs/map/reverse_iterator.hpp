@@ -23,7 +23,7 @@ namespace ft
         template <class I>
         reverse_iterator (const reverse_iterator<I> &rev_it) : _element(rev_it.base()) {}
 
-        reverse_iterator() : _element(0) {}
+        reverse_iterator() : _element() {}
 
         explicit reverse_iterator (iterator_type it) : _element(it) {}
 
@@ -38,7 +38,7 @@ namespace ft
 
         reference operator*() const {return *(_element);}
 
-        reverse_iterator &operator=(reverse_iterator const & src) {this->element = src._element; return *this;}
+        reverse_iterator &operator=(reverse_iterator const & src) {this->_element = src._element; return *this;}
         
         reverse_iterator operator+(difference_type d) const {return (reverse_iterator(_element - d));}
         
@@ -73,7 +73,6 @@ namespace ft
         pointer operator->() const {return _element.operator->();}
 
         private:
-
             iterator_type _element;
     };
 
