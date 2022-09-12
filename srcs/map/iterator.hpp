@@ -81,7 +81,7 @@ template <class T>
 
 		iterator operator--(int) {
 			iterator tmp(*this);
-			--*this;
+			--(*this);
 			return tmp;
 		}
 
@@ -99,14 +99,9 @@ template <class T>
 template<class iterator, class iterator2>
 bool operator==(ft::iterator<iterator> const& it, ft::iterator<iterator2> const& ite) { return !(it != ite); }
 template<class iterator, class iterator2>
-bool operator!=(ft::iterator<iterator> const& it, ft::iterator<iterator2> const& ite) {
-	if (it.base()->null_leaf == NULL && it.base()->null_leaf == NULL)
-		return false;
-	if (it.base()->null_leaf == NULL && it.base()->null_leaf)
-		return true;
-	if (it.base()->null_leaf && ite.base()->null_leaf == NULL)
-		return true;
-	return it->first != ite->first || it->second != ite->second;
+bool operator!=(ft::iterator<iterator> const& it, ft::iterator<iterator2> const& ite) 
+{
+	return it.base() != ite.base();
 }
 
 template <class T>
@@ -140,7 +135,6 @@ class const_iterator {
 
 	template <class it>
 	const_iterator(iterator<it> const& i) {
-		//*this = i;
 		this->ptr = i.ptr;
 		this->last = i.last;
 	}
@@ -190,14 +184,21 @@ class const_iterator {
 template<class const_iterator, class const_iterator2>
 bool operator==(ft::const_iterator<const_iterator> const& it, ft::const_iterator<const_iterator2> const& ite) { return !(it != ite); }
 template<class const_iterator, class const_iterator2>
-bool operator!=(ft::const_iterator<const_iterator> const& it, ft::const_iterator<const_iterator2> const& ite) {
-	if (it.base()->null_leaf == NULL && it.base()->null_leaf == NULL)
-		return false;
-	if (it.base()->null_leaf == NULL && it.base()->null_leaf)
-		return true;
-	if (it.base()->null_leaf && ite.base()->null_leaf == NULL)
-		return true;
-	return it->first != ite->first || it->second != ite->second;
+bool operator!=(ft::const_iterator<const_iterator> const& it, ft::const_iterator<const_iterator2> const& ite) 
+{
+	return it.base() != ite.base();
+}
+
+template <class Iterator1, class Iterator2>
+bool operator== (const ft::const_iterator<Iterator1>& lhs, const ft::iterator<Iterator2>& rhs)
+{
+	return (lhs.base() == rhs.base());
+}
+
+template <class Iterator1, class Iterator2>
+bool operator!= (const ft::const_iterator<Iterator1>& lhs, const ft::iterator<Iterator2>& rhs)
+{
+	return (lhs.base() != rhs.base());
 }
 
 };

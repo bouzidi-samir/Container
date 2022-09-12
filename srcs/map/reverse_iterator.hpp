@@ -36,13 +36,16 @@ namespace ft
             
  
 
-        reference operator*() const {return *(_element);}
+        reference operator*() const {
+			iterator_type	cpy = _element;
+			return (*(--cpy));
+		}
 
         reverse_iterator &operator=(reverse_iterator const & src) {this->_element = src._element; return *this;}
         
         reverse_iterator operator+(difference_type d) const {return (reverse_iterator(_element - d));}
         
-        reverse_iterator operator-(difference_type d) const {return (reverse_iterator(_element + d));}
+        reverse_iterator operator-(difference_type d) const {return (reverse_iterator(_element.base() + d));}
         
         reverse_iterator& operator++() {--_element; return (*this);}
 
@@ -68,9 +71,9 @@ namespace ft
 
         reference operator[](int n) {return *(_element - n);}
 
-        pointer operator->() {return _element.operator->();}
+        pointer operator->() {return &(operator*());}
 
-        pointer operator->() const {return _element.operator->();}
+        pointer operator->() const {return &(operator*());}
 
         private:
             iterator_type _element;
@@ -121,6 +124,7 @@ namespace ft
     template <typename T>
 	reverse_iterator<T> operator-(typename reverse_iterator<T>::difference_type d, const reverse_iterator<T> left)
     {
+		printf("here1");
 	    return reverse_iterator<T>(left.base() + d);
 	}
 
@@ -132,7 +136,8 @@ namespace ft
 
     template <class L, class R>
 	typename reverse_iterator<L>::difference_type operator-(const reverse_iterator<L>& left, const reverse_iterator<R>& right)
-	{ 
+	{ 		
+		printf("here2");
         return right.base() - left.base(); 
     }
 }

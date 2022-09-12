@@ -217,9 +217,13 @@ class binary_tree {
 		}
 		
 		Node *getFirstNode() const {
-			if (this->Root == null_leaf)
-				return null_leaf;
-			return getFirstNode(this->Root);
+			Node	*temp = Root;
+			if (Root != null_leaf)
+			{
+				while (temp->left != temp->null_leaf)
+					temp = temp->left;
+			}
+			return temp;
 		}
 
 		Node *getFirstNode(Node *node) const {
@@ -255,8 +259,6 @@ class binary_tree {
 			return nodeent;
 		}
 
-
-
 	void print_tree(Node *nod) {
 		printHelper(nod, "", true);
 	}
@@ -289,9 +291,9 @@ class binary_tree {
 		while (i++ < space)
 			printf(" ");
 		if (root->parent == root->null_leaf)
-			std::cout << root->data.first << " - null_leaf" << std::endl;
+			std::cout << "[" << root->data.first << "-" << root->data.second << "] -> parent=null_leaf" << std::endl;
 		else
-			std::cout << root->data.first << " - " <<  root->parent->data.first << std::endl;
+			std::cout << "[" << root->data.first << "-" << root->data.second << "] -> parent=" << root->parent->data.first << std::endl;
 		
 		btree_display(root->left, space);
 	}
