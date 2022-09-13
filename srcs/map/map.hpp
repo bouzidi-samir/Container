@@ -30,6 +30,23 @@ class map {
 		typedef typename ft::reverse_iterator<iterator>				reverse_iterator;
 		typedef typename ft::reverse_iterator<const_iterator>		const_reverse_iterator;
 
+		class value_compare { 
+
+				friend class map<key_type, mapped_type, key_compare, allocator_type>;
+
+				protected:
+					Compare comp;
+					value_compare (Compare c) : comp(c) {}
+
+				public:
+					typedef bool result_type;
+					typedef value_type first_argument_type;
+					typedef value_type second_argument_type;
+					bool operator() (const value_type& x, const value_type& y) const
+						{
+							return comp(x.first, y.first);
+						}
+		};
 
 
 		binary_tree<value_type, key_compare>	tree;
@@ -79,10 +96,10 @@ class map {
 			return key_compare();
 		}
 
-		// value_compare value_comp() const
-		// {
-
-		// }
+		value_compare value_comp() const
+		{
+			return value_compare(key_compare());
+		}
 
 
 		~map(void) {}
